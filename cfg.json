@@ -1,0 +1,1223 @@
+{
+     "APP获取设备列表": {
+          "index": "cloud-appserver",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 1,
+                                        "should": [
+                                             {
+                                                  "bool": {
+                                                       "minimum_should_match": 1,
+                                                       "should": [
+                                                            {
+                                                                 "match": {
+                                                                      "request.context.method": {
+                                                                           "query": "devices"
+                                                                      }
+                                                                 }
+                                                            },
+                                                            {
+                                                                 "match": {
+                                                                      "request.method": {
+                                                                           "query": "devices"
+                                                                      }
+                                                                 }
+                                                            }
+                                                       ]
+                                                  }
+                                             },
+                                             {
+                                                  "bool": {
+                                                       "must": {
+                                                            "match": {
+                                                                 "request.context.method": {
+                                                                      "query": "getDeviceGroupList"
+                                                                 }
+                                                            }
+                                                       }
+                                                  }
+                                             }
+                                        ]
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [
+               "null",
+               "true",
+               "false"
+          ],
+          "columnwidths": [
+               31,
+               100,
+               129,
+               57,
+               143,
+               232,
+               277,
+               46,
+               220,
+               63,
+               54,
+               100
+          ],
+          "querylist": [
+               {
+                    "request.accountID": "request.accountID"
+               },
+               {
+                    "request.context.accountID": "request.context.accountID"
+               },
+               {
+                    "request.context.method": "request.context.method"
+               },
+               {
+                    "total": {
+                         "mainkey": "response.result",
+                         "secondkey": "total",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "model": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"deviceType\": \"(.*?)\""
+                    }
+               },
+               {
+                    "deviceName": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"deviceName\": \"(.*?)\""
+                    }
+               },
+               {
+                    "CID": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"cid\": \"(.*?)\""
+                    }
+               },
+               {
+                    "isowner": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"isOwner\": \"(.*?)\""
+                    }
+               },
+               {
+                    "第一次配网时间": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"deviceFirstSetupTime\": \"(.*?)\""
+                    }
+               },
+               {
+                    "在线状态": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"connectionStatus\": \"(.*?)\""
+                    }
+               },
+               {
+                    "开关状态": {
+                         "mainkey": "response.result",
+                         "secondkey": "list",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"deviceStatus\": \"(.*?)\""
+                    }
+               }
+          ]
+     },
+     "APP_wifi灯泡控制": {
+          "index": "cloud-appserver",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 1,
+                                        "should": [
+                                             {
+                                                  "bool": {
+                                                       "minimum_should_match": 2,
+                                                       "should": [
+                                                            {
+                                                                 "wildcard": {
+                                                                      "request.context.method": "smartbulb*"
+                                                                 }
+                                                            },
+                                                            {
+                                                                 "match": {
+                                                                      "request.data": {
+                                                                           "query": "status brightNess"
+                                                                      }
+                                                                 }
+                                                            }
+                                                       ]
+                                                  }
+                                             },
+                                             {
+                                                  "wildcard": {
+                                                       "request.method": "smartbulb*"
+                                                  }
+                                             }
+                                        ]
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "accountID": "request.accountID"
+               },
+               {
+                    "AccountID": "request.context.accountID"
+               },
+               {
+                    "method": "request.method"
+               },
+               {
+                    "Method": "request.context.method"
+               },
+               {
+                    "code": "response.code"
+               },
+               {
+                    "response.msg": "response.msg"
+               },
+               {
+                    "uuid": "request.uuid"
+               },
+               {
+                    "Uuid": {
+                         "mainkey": "request.data",
+                         "secondkey": "uuid",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "bright": "request.brightNess"
+               },
+               {
+                    "Bright": {
+                         "mainkey": "request.data",
+                         "secondkey": "brightNess",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "status": "request.status"
+               },
+               {
+                    "Status": {
+                         "mainkey": "request.data",
+                         "secondkey": "status",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "reqtraceId": "request.traceId"
+               },
+               {
+                    "rsptraceId": "response.traceId"
+               },
+               {
+                    "TraceId": "request.context.traceId"
+               },
+               {
+                    "TimeZone": "request.context.timeZone"
+               },
+               {
+                    "timeZone": "request.timeZone"
+               },
+               {
+                    "AppVersion": "request.context.appVersion"
+               },
+               {
+                    "PhoneBrand": "request.context.phoneBrand"
+               },
+               {
+                    "PhoneOS": "request.context.phoneOS"
+               }
+          ],
+          "columnwidths": [
+               64,
+               69,
+               160,
+               154,
+               20,
+               80,
+               269,
+               253,
+               45,
+               47,
+               42,
+               44,
+               103,
+               101,
+               102,
+               133,
+               100,
+               101,
+               90,
+               78
+          ]
+     },
+     "ELK配网日志": {
+          "index": "setup_log",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "match_all": {}
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "StartConfigDate.keyword": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "AccountEmail": "AccountEmail"
+               },
+               {
+                    "UserID": "UserID"
+               },
+               {
+                    "StartConfigDate": "StartConfigDate"
+               },
+               {
+                    "ConfigModule": "ConfigModule"
+               },
+               {
+                    "Result": "Result"
+               },
+               {
+                    "err": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step4_DeviceReturnData.CurrentConfig.Result.err",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "CID": "CID"
+               },
+               {
+                    "routermac": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step4_DeviceReturnData.CurrentConfig.Result.routerMac",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "routerchannel": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step4_DeviceReturnData.CurrentConfig.Result.routerChannel",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "deviceRSSI": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step4_DeviceReturnData.CurrentConfig.Result.deviceRSSI",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "SSID": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step3_ConfigInfo.wifiSSID",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "password": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step3_ConfigInfo.transfromText",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "wificount": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step4_DeviceReturnData.WiFiListInfoArr",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"WiFiCount\": \"(.*?)\""
+                    }
+               },
+               {
+                    "description": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step4_DeviceReturnData.ConnectStepInfoArr",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"description\": \"(.*?)\""
+                    }
+               },
+               {
+                    "step2time": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step2_ConnectDeviceByTCP",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"DateTime\": \"(.*?)\""
+                    }
+               },
+               {
+                    "stepTcp": {
+                         "mainkey": "DetailInfo",
+                         "secondkey": "Step2_ConnectDeviceByTCP",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"Result\": \"(.*?)\""
+                    }
+               }
+          ],
+          "columnwidths": [
+               176,
+               115,
+               158,
+               183,
+               60,
+               29,
+               264,
+               111,
+               29,
+               47,
+               156,
+               108,
+               105,
+               211,
+               146,
+               428,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100
+          ]
+     },
+     "获取设备schedule": {
+          "index": "cloud-appserver",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 1,
+                                        "should": [
+                                             {
+                                                  "match_phrase": {
+                                                       "request.context.method": {
+                                                            "query": "getSchedules"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "match_phrase": {
+                                                       "request.method": {
+                                                            "query": "getSchedules"
+                                                       }
+                                                  }
+                                             }
+                                        ]
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "accountID": "request.accountID"
+               },
+               {
+                    "AccountID": "request.context.accountID"
+               },
+               {
+                    "uuid": "request.uuid"
+               },
+               {
+                    "Uuid": {
+                         "mainkey": "request.data",
+                         "secondkey": "uuid",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "rspcode": "response.code"
+               },
+               {
+                    "ScheduleID": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"scheduleID\":\"(.*?)\""
+                    }
+               },
+               {
+                    "Status": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"status\":\"(.*?)\""
+                    }
+               },
+               {
+                    "StartTime": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"startTime\":\"(.*?)\""
+                    }
+               },
+               {
+                    "StartState": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"startState\":\"(.*?)\""
+                    }
+               },
+               {
+                    "EndTime": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"endTime\":\"(.*?)\""
+                    }
+               },
+               {
+                    "EndState": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"endState\":\"(.*?)\""
+                    }
+               },
+               {
+                    "DeviceName": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"deviceName\":\"(.*?)\""
+                    }
+               },
+               {
+                    "TimeZone": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"timeZone\":\"(.*?)\""
+                    }
+               },
+               {
+                    "Repeat": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"repeat\":\"(.*?)\""
+                    }
+               },
+               {
+                    "Screen": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"screen\":\"(.*?)\""
+                    }
+               },
+               {
+                    "Brightness": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"brightness\":\"(.*?)\""
+                    }
+               },
+               {
+                    "LikeId": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"likeId\":\"(.*?)\""
+                    }
+               },
+               {
+                    "SwitchNo": {
+                         "mainkey": "response.result",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"switchNo\":\"(.*?)\""
+                    }
+               }
+          ],
+          "columnwidths": [
+               66,
+               68,
+               260,
+               255,
+               59,
+               72,
+               44,
+               64,
+               68,
+               63,
+               65,
+               140,
+               145,
+               117,
+               56,
+               69,
+               47,
+               67
+          ]
+     },
+     "Vdmp Token操作": {
+          "index": "vdmp-online",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "should": [
+                                             {
+                                                  "match_phrase": {
+                                                       "M": "request-IN"
+                                                  }
+                                             },
+                                             {
+                                                  "match_phrase": {
+                                                       "M": "request-out"
+                                                  }
+                                             }
+                                        ],
+                                        "minimum_should_match": 1
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "cid": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"cid\":\"(.*?)\".group"
+                    }
+               },
+               {
+                    "state": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\\\\\\\"state\\\\\\\":\\{(.*?)\\},.group"
+                    }
+               },
+               {
+                    "accountid": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"accountID\":\"(.*?)\""
+                    }
+               },
+               {
+                    "appversion": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"appVersion\":\"(.*?)\""
+                    }
+               },
+               {
+                    "phoneos": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"phoneOS\":\"(.*?)\""
+                    }
+               },
+               {
+                    "phoneBrand": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"phoneBrand\":\"(.*?)\""
+                    }
+               },
+               {
+                    "traceId": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"traceId\":\"(.*?)\".group"
+                    }
+               },
+               {
+                    "code": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\\\\\\\"code\\\\\\\":(.*?)\\}"
+                    }
+               },
+               {
+                    "jscmd": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\\\\\\\"jsonCmd\\\\\\\":\\{(.*?)\\}.group"
+                    }
+               },
+               {
+                    "method": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"method\":\"(.*?)\".group"
+                    }
+               },
+               {
+                    "data": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"data\":\\{(.*?)\\}.group"
+                    }
+               }
+          ],
+          "columnwidths": [
+               279,
+               264,
+               100,
+               195,
+               112,
+               100,
+               114,
+               135,
+               162,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100
+          ]
+     },
+     "7A开关查询": {
+          "index": "cloud-wifioutlet7a",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 1,
+                                        "should": [
+                                             {
+                                                  "match": {
+                                                       "url": {
+                                                            "query": "on off"
+                                                       }
+                                                  }
+                                             },
+                                             {
+                                                  "bool": {
+                                                       "must": [
+                                                            {
+                                                                 "exists": {
+                                                                      "field": "cid"
+                                                                 }
+                                                            },
+                                                            {
+                                                                 "match_phrase": {
+                                                                      "M": "get device response to other"
+                                                                 }
+                                                            }
+                                                       ]
+                                                  }
+                                             }
+                                        ]
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "accountId": "accountId"
+               },
+               {
+                    "日志来源": {
+                         "mainkey": "url",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "/v1/(.*?)/"
+                    }
+               },
+               {
+                    "请求状态": {
+                         "mainkey": "url",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "/status/(.*?)$"
+                    }
+               },
+               {
+                    "M": "M"
+               },
+               {
+                    "traceId": "traceId"
+               }
+          ],
+          "columnwidths": [
+               71,
+               99,
+               70,
+               206,
+               266,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100
+          ]
+     },
+     "alexa_token查询": {
+          "index": "cloud-alexacontrolproxy",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 1,
+                                        "should": [
+                                             {
+                                                  "match_phrase": {
+                                                       "M": "request"
+                                                  }
+                                             },
+                                             {
+                                                  "match_phrase": {
+                                                       "M": "response"
+                                                  }
+                                             }
+                                        ]
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [
+               "true",
+               "false"
+          ],
+          "querylist": [
+               {
+                    "M": "M"
+               },
+               {
+                    "code": "code"
+               },
+               {
+                    "reqName": {
+                         "mainkey": "body",
+                         "secondkey": "directive.header.name",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "reqNameSpace": {
+                         "mainkey": "body",
+                         "secondkey": "directive.header.namespace",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               },
+               {
+                    "resName": {
+                         "mainkey": "body",
+                         "secondkey": "context.properties",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"name\": \"(.*?)\".group"
+                    }
+               },
+               {
+                    "resNameSpace": {
+                         "mainkey": "body",
+                         "secondkey": "context.properties",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"namespace\": \"(.*?)\""
+                    }
+               },
+               {
+                    "resValue": {
+                         "mainkey": "body",
+                         "secondkey": "context.properties",
+                         "transformtidict": true,
+                         "useregex": true,
+                         "regex": "\"value\": (.*?})"
+                    }
+               },
+               {
+                    "traceId": "traceId"
+               },
+               {
+                    "CID": {
+                         "mainkey": "body",
+                         "secondkey": "directive.endpoint.endpointId",
+                         "transformtidict": true,
+                         "useregex": false
+                    }
+               }
+          ],
+          "columnwidths": [
+               73,
+               35,
+               100,
+               100,
+               100,
+               100,
+               100,
+               260,
+               350,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               200
+          ]
+     },
+     "7A过流与trigger查询": {
+          "index": "cloud-wifioutlet7a",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 1,
+                                        "should": [
+                                             {
+                                                  "match_phrase": {
+                                                       "msg": "trigger"
+                                                  }
+                                             },
+                                             {
+                                                  "match_phrase": {
+                                                       "msg": "\"otp\":\"on\""
+                                                  }
+                                             }
+                                        ],
+                                        "must": {
+                                             "match_phrase": {
+                                                  "M": "get device msg"
+                                             }
+                                        }
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "M": "M"
+               },
+               {
+                    "msg": "msg"
+               },
+               {
+                    "cid": "cid"
+               },
+               {
+                    "accountId": "accountId"
+               }
+          ],
+          "columnwidths": [
+               100,
+               342,
+               260,
+               75,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100
+          ]
+     },
+     "Vdmp_trigger设置上报_otp上报": {
+          "index": "vdmp-online",
+          "body": {
+               "query": {
+                    "bool": {
+                         "must": [
+                              {
+                                   "bool": {
+                                        "minimum_should_match": 2,
+                                        "should": [
+                                             {
+                                                  "match_phrase": {
+                                                       "M": "trigger"
+                                                  }
+                                             },
+                                             {
+                                                  "match_phrase": {
+                                                       "M": "\"otp\":\"on\""
+                                                  }
+                                             },
+                                             {
+                                                  "match": {
+                                                       "M": "send"
+                                                  }
+                                             },
+                                             {
+                                                  "match": {
+                                                       "M": "received"
+                                                  }
+                                             }
+                                        ]
+                                   }
+                              }
+                         ]
+                    }
+               },
+               "size": 500,
+               "from": 0,
+               "sort": {
+                    "@timestamp": {
+                         "order": "desc"
+                    }
+               }
+          },
+          "globalvars": [],
+          "querylist": [
+               {
+                    "L": "L"
+               },
+               {
+                    "日志来源": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "(.*?) client"
+                    }
+               },
+               {
+                    "otp上报": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"OTP\":\"(.*?)\""
+                    }
+               },
+               {
+                    "trigger": {
+                         "mainkey": "M",
+                         "transformtidict": false,
+                         "useregex": true,
+                         "regex": "\"trigger\":{(.*?)}"
+                    }
+               }
+          ],
+          "columnwidths": [
+               43,
+               80,
+               96,
+               411,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100,
+               100
+          ]
+     }
+}
